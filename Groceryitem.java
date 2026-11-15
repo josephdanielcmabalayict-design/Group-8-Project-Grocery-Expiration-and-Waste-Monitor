@@ -10,16 +10,39 @@ public class GroceryItem {
         private double price;
         private double unitPrice;
 
-        public GroceryItem(String groceryId, String name, String category, int quantity, LocalDate expirationDate, double price){
+        //constructor for new grocery
+        public GroceryItem(String groceryId, String name, String category, int quantity, 
+                           LocalDate expirationDate, double price){
             
+            if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
+            }
+
             this.groceryId = groceryId; 
             this.name = name;
             this.category = category;
             this.quantity = quantity;
             this.expirationDate = expirationDate;
             this.price = price;
-           //(also removed from parameters this.unitPrice = price / quantity; //from sirs suggestion. try 2 understand this part better
+            this.unitPrice = price / quantity; //from sirs suggestion. try 2 understand this part better
         }
+
+        //constructor for loading saved grocery
+        public GroceryItem(String groceryId, String name, String category, int quantity, 
+                           LocalDate expirationDate, double price, double unitPrice) {
+
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("Quantity must be greater than zero.");
+        }
+
+        this.groceryId = groceryId;
+        this.name = name;
+        this.category = category;
+        this.quantity = quantity;
+        this.expirationDate = expirationDate;
+        this.price = price;
+        this.unitPrice = unitPrice;
+    }
 
         //the gettersz
         public String getGroceryId() {
@@ -46,16 +69,18 @@ public class GroceryItem {
             return price;
         }
 
+        public double getUnitPrice() {
+        return unitPrice;
+        }   
+
         public String getDetails() {
         return String.format(
-            "ID: %s | Name: %s | Category: %s | Quantity: %d | Expiration: %s | Price: PHP %.2f",
-            groceryId, name, category, quantity,
-            expirationDate, price
-        );
+            "%-10s %-18s %-15s %-10d %-15s PHP %.2f",
+            groceryId, name, category, quantity, expirationDate, price
+        ); //String format
         }
 
-       //le setters
-
+       //Setters
        public void setName(String name){
             this.name = name;
        }
@@ -65,11 +90,19 @@ public class GroceryItem {
        }
                             
        public void setQuantity (int quantity){
+           if (quantity <= 0) {
+              throw new IllegalArgumentException("Quantity must be greater than zero.");
+            }
+
             this.quantity = quantity;
             this.price = unitPrice * quantity; //bcos divided
        }
 
        public void setPrice (double price){
+            if (price < 0 || !Double.isFinite(price)) {
+                throw new IllegalArgumentException("Invalid price.");
+            }
+
             this.price = price;
             this.unitPrice = price / quantity; //update happens twice i think? bcos both changes affect both variables. makes sense.
         }
@@ -78,11 +111,11 @@ public class GroceryItem {
             this.expirationDate = expirationDate;
        }
 
-   
-
        // Reduce grocery qty after consumption
-
-    public double markAsConsumed(int amount) {
+       public double markAsConsumed(int amount) {
+        if (amount <= 0 || amount > quantity) {
+            throw new IllegalArgumentException("Invalid quantity.");
+        }
 
         double consumedValue = unitPrice * amount;
 
@@ -93,8 +126,10 @@ public class GroceryItem {
     }
 
     // Reduce grocery qty after disposal
-
     public double markAsWasted(int amount) {
+        if (amount <= 0 || amount > quantity) {
+            throw new IllegalArgumentException("Invalid quantity.");
+        }
 
         double wastedValue = unitPrice * amount;
 
