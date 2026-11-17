@@ -1,5 +1,4 @@
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -8,31 +7,18 @@ public class FileManager {
     private final String groceryFile = "groceries.txt";
     private final String wasteFile = "waste_records.txt";
 
-    // Encode text so special characters do not break the file format
-    private String encode(String text) {
-        return Base64.getEncoder().encodeToString(
-            text.getBytes(StandardCharsets.UTF_8)
-        );
-    }
-
-    private String decode(String text) {
-        return new String(
-            Base64.getDecoder().decode(text),
-            StandardCharsets.UTF_8
-        );
-    }
-
     // Save grocery items
     public boolean saveGroceries(ArrayList<GroceryItem> groceries) {
 
-        try (PrintWriter writer = new PrintWriter(groceryFile, "UTF-8")) {
+        try {
+            PrintWriter writer = new PrintWriter(groceryFile);
 
             for (GroceryItem item : groceries) {
 
                 writer.println(
                     item.getGroceryId() + "|" +
-                    encode(item.getName()) + "|" +
-                    encode(item.getCategory()) + "|" +
+                    item.getName() + "|" +
+                    item.getCategory() + "|" +
                     item.getQuantity() + "|" +
                     item.getExpirationDate() + "|" +
                     item.getPrice() + "|" +
@@ -40,10 +26,11 @@ public class FileManager {
                 );
             }
 
+            writer.close();
             return true;
 
         } catch (IOException e) {
-            System.out.println("Error saving groceries: " + e.getMessage());
+            System.out.println("Error saving groceries.");
             return false;
         }
     }
@@ -53,66 +40,43 @@ public class FileManager {
 
         ArrayList<GroceryItem> groceries = new ArrayList<>();
 
-        File file = new File(groceryFile);
+        try {
+            File file = new File(groceryFile);
 
-        if (!file.exists()) {
-            return groceries;
-        }
+            if (!file.exists()) {
+                return groceries;
+            }
 
-        try (Scanner reader = new Scanner(file, "UTF-8")) {
+            Scanner reader = new Scanner(file);
 
             while (reader.hasNextLine()) {
 
                 String line = reader.nextLine();
-                String[] data = line.split("\\|", -1);
+                String[] data = line.split("\\|");
 
-                if (data.length != 6 && data.length != 7) {
-                    continue;
-                }
+                if (data.length == 7) {
 
-                try {
                     String id = data[0];
-                    String name = decode(data[1]);
-                    String category = decode(data[2]);
-
+                    String name = data[1];
+                    String category = data[2];
                     int quantity = Integer.parseInt(data[3]);
                     LocalDate expirationDate = LocalDate.parse(data[4]);
                     double price = Double.parseDouble(data[5]);
+                    double unitPrice = Double.parseDouble(data[6]);
 
-                    if (quantity <= 0 || price < 0 || !Double.isFinite(price)) {
-                        continue;
-                    }
-
-                    GroceryItem item;
-
-                    if (data.length == 7) {
-                        double unitPrice = Double.parseDouble(data[6]);
-
-                        if (unitPrice < 0 || !Double.isFinite(unitPrice)) {
-                            continue;
-                        }
-
-                        item = new GroceryItem(
-                            id, name, category, quantity,
-                            expirationDate, price, unitPrice
-                        );
-
-                    } else {
-                        item = new GroceryItem(
-                            id, name, category, quantity,
-                            expirationDate, price
-                        );
-                    }
+                    GroceryItem item = new GroceryItem(
+                        id, name, category, quantity,
+                        expirationDate, price, unitPrice
+                    );
 
                     groceries.add(item);
-
-                } catch (RuntimeException e) {
-                    System.out.println("Skipped an invalid grocery record.");
                 }
             }
 
-        } catch (IOException e) {
-            System.out.println("Error loading groceries: " + e.getMessage());
+            reader.close();
+
+        } catch (Exception e) {
+            System.out.println("Error loading groceries.");
         }
 
         return groceries;
@@ -121,26 +85,28 @@ public class FileManager {
     // Save waste records
     public boolean saveWasteRecords(ArrayList<WasteRecord> records) {
 
-        try (PrintWriter writer = new PrintWriter(wasteFile, "UTF-8")) {
+        try {
+            PrintWriter writer = new PrintWriter(wasteFile);
 
             for (WasteRecord record : records) {
 
                 writer.println(
                     record.getWasteRecordID() + "|" +
                     record.getGroceryID() + "|" +
-                    encode(record.getItemName()) + "|" +
-                    encode(record.getCategory()) + "|" +
+                    record.getItemName() + "|" +
+                    record.getCategory() + "|" +
                     record.getQuantity() + "|" +
                     record.getEstimatedLoss() + "|" +
-                    encode(record.getDisposalReason()) + "|" +
+                    record.getDisposalReason() + "|" +
                     record.getDisposalDate()
                 );
             }
 
+            writer.close();
             return true;
 
         } catch (IOException e) {
-            System.out.println("Error saving waste records: " + e.getMessage());
+            System.out.println("Error saving waste records.");
             return false;
         }
     }
@@ -150,58 +116,56 @@ public class FileManager {
 
         ArrayList<WasteRecord> records = new ArrayList<>();
 
-        File file = new File(wasteFile);
+        try {
+            File file = new File(wasteFile);
 
-        if (!file.exists()) {
-            return records;
-        }
+            if (!file.exists()) {
+                return records;
+            }
 
-        try (Scanner reader = new Scanner(file, "UTF-8")) {
+            Scanner reader = new Scanner(file);
 
             while (reader.hasNextLine()) {
 
                 String line = reader.nextLine();
-                String[] data = line.split("\\|", -1);
+                String[] data = line.split("\\|");
 
-                if (data.length != 8) {
-                    continue;
-                }
+                if (data.length == 8) {
 
-                try {
                     WasteRecord record = new WasteRecord(
                         data[0],
                         data[1],
-                        decode(data[2]),
-                        decode(data[3]),
+                        data[2],
+                        data[3],
                         Integer.parseInt(data[4]),
                         Double.parseDouble(data[5]),
-                        decode(data[6]),
+                        data[6],
                         LocalDate.parse(data[7])
                     );
 
                     records.add(record);
-
-                } catch (RuntimeException e) {
-                    System.out.println("Skipped an invalid waste record.");
                 }
             }
 
-        } catch (IOException e) {
-            System.out.println("Error loading waste records: " + e.getMessage());
+            reader.close();
+
+        } catch (Exception e) {
+            System.out.println("Error loading waste records.");
         }
 
         return records;
     }
 
-    // Save both lists
+    // Save all data
     public void saveAll(GroceryManager manager) {
-        boolean ok = saveGroceries(manager.getGroceries());
-        ok = saveWasteRecords(manager.getWasteRecords()) && ok;
 
-        if (ok) {
-            System.out.println("\nData saved successfully.");
+        boolean grocerySaved = saveGroceries(manager.getGroceries());
+        boolean wasteSaved = saveWasteRecords(manager.getWasteRecords());
+
+        if (grocerySaved && wasteSaved) {
+            System.out.println("Data saved successfully.");
         } else {
-            System.out.println("\nData could NOT be fully saved.");
+            System.out.println("Error saving data.");
         }
     }
 }
