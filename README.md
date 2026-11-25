@@ -43,20 +43,19 @@ The application demonstrates the following Object-Oriented Programming principle
 
 **Encapsulation**
 
-Encapsulation is implemented by restricting direct access to the internal data of classes through private fields. Getter and setter methods are used when accessing or modifying the necessary information.
+Encapsulation means keeping an object's data private and controlling how it can be accessed or changed. Every class in the program does this. In GroceryItem, all the fields (ID, name, category, quantity, expiration date, price, unit price) are private, so other classes can only reach them through getters and setters. The setters protect the data: setQuantity rejects zero or negative values, and setPrice rejects negative or invalid numbers. Changing the quantity also recalculates the total price from the unit price, so the two values stay consistent
 
 **Abstraction**
 
-Abstraction is demonstrated through abstract classes and methods that define common structures and behaviors while leaving specific implementations to other classes. This helps reduce unnecessary complexity and separates general functionality from implementation details.
+Abstraction means hiding the details and showing only what the user of a class needs. The Report class is the clearest example. It is an abstract class that defines what every report must provide (getTitle() and printBody()) without saying how. Whoever calls displayReport() doesn't need to know how the report is built or printed. Other classes show it too. Main calls groceryManager.logWasted(...) without knowing that it finds the item, reduces the quantity, creates a waste record and saves the data.
 
 **Inheritance**
 
-Inheritance is used where appropriate to establish relationships between classes that share common functionality. For example, specialized report classes can inherit common reporting behavior from an abstract report class.
+Inheritance means a child class reuses and extends a parent class. WasteReport extends Report, so it gets the parent's displayReport() behavior without rewriting it. The parent holds the shared logic (check for data, print the title, print the body), and the child only supplies what is specific to waste: the title "WASTE REPORT", the computation of total loss and the most wasted category, and the empty-data message. The hasData() and getEmptyMessage() methods have default versions in the parent that the child can override when needed.
 
 **Polymorphism**
 
-Polymorphism allows different report implementations to provide their own behavior through method overriding while following a common structure defined by their parent class.
-
+Polymorphism means the same method call can behave differently depending on the actual object. WasteReport overrides getTitle(), printBody(), hasData() and getEmptyMessage(), so when displayReport() in the parent calls them, it runs the waste-specific versions. In Main, the method showReport(Report report) accepts the parent type, so any report subclass can be passed to it and it will work the same way.
 The application uses these principles to improve code organization, maintainability, and separation of responsibilities.
 
 ## 5. System Requirements
