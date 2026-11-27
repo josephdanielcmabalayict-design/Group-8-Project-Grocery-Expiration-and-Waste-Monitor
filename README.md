@@ -42,17 +42,51 @@ This project demonstrates the application of Object-Oriented Programming (OOP) p
 
 ## Object-Oriented Programming Concepts
 
+The Grocery Expiration and Waste Monitor applies the four major Object-Oriented Programming (OOP) principles: encapsulation, abstraction, inheritance, and polymorphism. These principles help organize the code, protect data, and reduce unnecessary repetition.
+
 ### Encapsulation
 
-Private attributes protect the data within classes. Getter and setter methods provide controlled access to the information.
+Encapsulation means keeping an object's data private and controlling how it can be accessed or modified.
+
+The `GroceryItem` class demonstrates encapsulation by declaring its fields, such as ID, name, category, quantity, expiration date, price, and unit price, as private.
+
+Other classes access or modify these fields through getter and setter methods. The setters also apply validation, such as rejecting zero or negative quantities and preventing invalid prices.
+
+Additionally, changing the quantity recalculates the total price based on the unit price, helping maintain consistency between the item's quantity and price.
 
 ### Abstraction
 
-The application separates responsibilities into different classes and methods. For example, inventory operations and file operations are handled separately.
+Abstraction means hiding implementation details and exposing only the operations necessary for other parts of the program to use.
+
+The `Report` class demonstrates abstraction by defining the methods that every report must provide, such as `getTitle()` and `printBody()`, without specifying their complete implementation.
+
+The `displayReport()` method handles the general reporting process, allowing the caller to display a report without knowing its internal details.
+
+Abstraction is also demonstrated when `Main` calls methods such as `groceryManager.logWasted()`. The caller does not need to know the internal steps involved in finding the grocery item, updating its quantity, creating a waste record, and saving the data.
+
+### Inheritance
+
+Inheritance allows a class to reuse and extend the behavior of another class.
+
+The `WasteReport` class extends the abstract `Report` class. It inherits the shared reporting behavior, including the `displayReport()` method, instead of implementing the entire reporting process again.
+
+The `Report` class provides the general structure and shared logic, while `WasteReport` supplies the waste-specific implementation, such as the report title, waste calculations, and empty-data message.
+
+This reduces code duplication and allows the reporting structure to be extended with additional report types.
 
 ### Polymorphism
 
-The reporting structure can use a general `Report` reference to work with a specific `WasteReport` implementation, where supported by the project code.
+Polymorphism allows the same method call to produce different behavior depending on the actual object being used.
+
+The `WasteReport` class overrides methods inherited from `Report`, including `getTitle()`, `printBody()`, `hasData()`, and `getEmptyMessage()`.
+
+When the inherited `displayReport()` method calls these methods, Java executes the overridden implementations belonging to the actual `WasteReport` object.
+
+The `showReport(Report report)` method in `Main` also demonstrates polymorphism because it accepts a `Report` reference. This allows different report subclasses to be passed to the same method, provided they follow the `Report` structure.
+
+### Summary
+
+The application uses these OOP principles to improve code organization, maintainability, data protection, and separation of responsibilities.
 
 ## System Requirements
 
