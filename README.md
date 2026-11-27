@@ -84,10 +84,6 @@ When the inherited `displayReport()` method calls these methods, Java executes t
 
 The `showReport(Report report)` method in `Main` also demonstrates polymorphism because it accepts a `Report` reference. This allows different report subclasses to be passed to the same method, provided they follow the `Report` structure.
 
-### Summary
-
-The application uses these OOP principles to improve code organization, maintainability, data protection, and separation of responsibilities.
-
 ## System Requirements
 
 ### Hardware Requirements
