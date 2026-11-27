@@ -42,19 +42,9 @@ This project demonstrates the application of Object-Oriented Programming (OOP) p
 
 ## Object-Oriented Programming Concepts
 
-### Classes and Objects
-
-The project uses classes such as `GroceryItem`, `GroceryManager`, `WasteRecord`, and `FileManager`.
-
-Objects created from these classes represent grocery records and perform specific application tasks.
-
 ### Encapsulation
 
 Private attributes protect the data within classes. Getter and setter methods provide controlled access to the information.
-
-### Constructors
-
-Constructors initialize objects with the values required for grocery items and other records.
 
 ### Abstraction
 
