@@ -1,10 +1,8 @@
 # Grocery Expiration and Waste Monitor
 
-## 1. Project Title
-
 **Grocery Expiration and Waste Monitor**
 
-## 2. Project Overview
+## Project Overview
 
 The Grocery Expiration and Waste Monitor is a Java-based console application designed to help users organize their grocery inventory and monitor expiration dates.
 
@@ -16,7 +14,7 @@ Grocery and waste records are stored in local text files, allowing information t
 
 This project demonstrates the application of Object-Oriented Programming (OOP) principles and file handling in Java.
 
-## 3. Features
+## Features
 
 | Feature | Description |
 |---|---|
@@ -32,7 +30,7 @@ This project demonstrates the application of Object-Oriented Programming (OOP) p
 | View Waste Report | Generates a report based on recorded waste information. |
 | Save and Exit | Saves inventory and waste records before closing the application. |
 
-## 4. Technologies Used
+## Technologies Used
 
 | Technology | Purpose |
 |---|---|
@@ -44,7 +42,7 @@ This project demonstrates the application of Object-Oriented Programming (OOP) p
 | UUID | Generates unique identifiers for waste records. |
 | GitHub | Hosts the source code and supports project collaboration. |
 
-## 5. Object-Oriented Programming Concepts
+## Object-Oriented Programming Concepts
 
 ### Classes and Objects
 
@@ -68,7 +66,7 @@ The application separates responsibilities into different classes and methods. F
 
 The reporting structure can use a general `Report` reference to work with a specific `WasteReport` implementation, where supported by the project code.
 
-## 6. System Requirements
+## System Requirements
 
 ### Hardware Requirements
 
@@ -85,7 +83,7 @@ The reporting structure can use a general `Report` reference to work with a spec
   - Visual Studio Code with Java support
 - An operating system that supports the installed Java version
 
-## 7. Installation and Execution
+## Installation and Execution
 
 ### Downloading the Project
 
@@ -127,7 +125,7 @@ Expected data files include:
 
 Use the program's **Save and Exit** option before closing it to ensure the latest changes are saved.
 
-## 8. How to Use the Program
+## How to Use the Program
 
 When the application starts, it loads saved records, if available, checks expiration dates, and displays the main menu.
 
@@ -170,7 +168,7 @@ The program should add the grocery record and display its details or generated I
 4. Enter the reason for waste, such as expired or spoiled.
 5. Review the recorded entry and estimated loss.
 
-## 9. Test Cases
+## Test Cases
 
 The following test cases can be used to verify the application's main functions.
 
