@@ -1,7 +1,5 @@
 # Grocery Expiration and Waste Monitor
 
-**Grocery Expiration and Waste Monitor**
-
 ## Project Overview
 
 The Grocery Expiration and Waste Monitor is a Java-based console application designed to help users organize their grocery inventory and monitor expiration dates.
